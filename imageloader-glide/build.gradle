@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+apply from: "../common.gradle"
+
+android {
+    resourcePrefix "gank_"
+}
+
+dependencies {
+//    api(rootProject.ext.dependencies["glide"]) {
+//        exclude module: 'support-annotations'
+//        exclude module: 'support-fragment'
+//    }
+//    kapt(rootProject.ext.dependencies["glide-compiler"]) {
+//        exclude module: 'jsr305'
+//    }
+    api rootProject.ext.dependencies["glide"]
+    kapt(rootProject.ext.dependencies["glide-compiler"]) {
+        exclude module: 'jsr305'
+    }
+
+    compileOnly project(':commonsdk')
+}

@@ -1,12 +1,19 @@
-package com.eugene.mvpcore.base.proxy
+package com.eugene.commonsdk.base.proxy
 
 import android.app.Application
 import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.res.Configuration
-import com.eugene.mvpcore.base.IApp
-import com.eugene.mvpcore.base.proxy.service.IAppLifecycle
-import com.eugene.mvpcore.di.component.AppComponent
+import com.eugene.commonsdk.base.IApp
+import com.eugene.commonsdk.base.service.IAppLifecycle
+import com.eugene.commonsdk.di.component.AppComponent
+import com.eugene.commonsdk.di.module.GlobalConfigModule
+import com.eugene.commonsdk.integration.IConfigModule
+import com.eugene.commonsdk.integration.cache.IntelligentCache
+import com.eugene.commonsdk.utils.ManifestParser
+import com.eugene.commonsdk.utils.Preconditions
+import javax.inject.Inject
+import javax.inject.Named
 
 
 /**
@@ -15,15 +22,85 @@ import com.eugene.mvpcore.di.component.AppComponent
  * 这时就不用再继承 BaseApplication,只用在自定义Application中对应的生命周期调用AppProxy对应的方法
  * (Application一定要实现APP接口),框架就能照常运行
  */
-class AppProxy : IApp, IAppLifecycle {
+class AppDelegate(private val context: Context?) : IApp, IAppLifecycle {
+    private var mApplication: Application? = null
+    private var mAppComponent: AppComponent? = null
 
+    @field:[Named("ActivityLifecycle")]
+//    @field:ALifecycle
+    @set:Inject
+    protected var mActivityLifecycle: Application.ActivityLifecycleCallbacks? = null
+
+    @field:[Named("ActivityLifecycleForRxLifecycle")]
+//    @field:RxLifecycle
+    @set:Inject
+    protected var mActivityLifecycleForRxLifecycle: Application.ActivityLifecycleCallbacks? = null
+
+    private var mModuleIS: List<IConfigModule>? = null
+    private var mAppLifecycles = mutableListOf<IAppLifecycle>()
+    private var mActivityLifecycles = mutableListOf<Application.ActivityLifecycleCallbacks>()
+    private var mComponentCallback: ComponentCallbacks2? = null
+
+    init {
+        //用反射, 将 AndroidManifest.xml 中带有 IConfigModule 标签的 class 转成对象集合（List<IConfigModule>）
+        mModuleIS = ManifestParser(context).parse()
+
+        //遍历之前获得的集合, 执行每一个 IConfigModule 实现类的某些方法
+        mModuleIS?.forEach {
+
+            //将框架外部, 开发者实现的 Application 的生命周期回调 (AppLifecycles) 存入 mAppLifecycles 集合 (此时还未注册回调)
+            it.injectAppLifecycle(context, mAppLifecycles)
+
+            //将框架外部, 开发者实现的 Activity 的生命周期回调 (ActivityLifecycleCallbacks) 存入 mActivityLifecycles 集合 (此时还未注册回调)
+            it.injectActivityLifecycle(context, mActivityLifecycles)
+        }
+    }
 
     override fun attachBaseContext(base: Context?) {
-
+        //遍历 mAppLifecycles, 执行所有已注册的 AppLifecycles 的 attachBaseContext() 方法 (框架外部, 开发者扩展的逻辑)
+        mAppLifecycles.forEach {
+            it.attachBaseContext(base)
+        }
     }
 
     override fun onCreate(base: Application) {
+        this.mApplication = base
+        this.mAppComponent = DaggerAppComponent.builder()
+                .application(base)
+                .globalConfigModule(getGlobalConfigModule(base, mModuleIS))
+                .build()
+        mAppComponent?.inject(this)
 
+
+        //将 IConfigModule 的实现类的集合存放到缓存 Cache, 可以随时获取
+        //使用 IntelligentCache.KEY_KEEP 作为 key 的前缀, 可以使储存的数据永久存储在内存中
+        //否则存储在 LRU 算法的存储空间中 (大于或等于缓存所能允许的最大 size, 则会根据 LRU 算法清除之前的条目)
+        //前提是 extras 使用的是 IntelligentCache (框架默认使用)
+        mAppComponent?.extras()?.put(IntelligentCache.getKeyOfKeep(IConfigModule::class.java.name), mModuleIS)
+
+        this.mModuleIS = null
+
+        //注册框架内部已实现的 Activity 生命周期逻辑
+        base.registerActivityLifecycleCallbacks(mActivityLifecycle)
+
+        //注册框架内部已实现的 RxLifecycle 逻辑
+        base.registerActivityLifecycleCallbacks(mActivityLifecycleForRxLifecycle)
+
+        //注册框架外部, 开发者扩展的 Activity 生命周期逻辑
+        //每个 IConfigModule 的实现类可以声明多个 Activity 的生命周期回调
+        //也可以有 N 个 IConfigModule 的实现类 (完美支持组件化项目 各个 Module 的各种独特需求)
+        for (lifecycle in mActivityLifecycles) {
+            base.registerActivityLifecycleCallbacks(lifecycle)
+        }
+
+        mComponentCallback = AppComponentCallbacks(base, mAppComponent)
+        //注册回掉: 内存紧张时释放部分内存
+        base.registerComponentCallbacks(mComponentCallback)
+
+        //执行框架外部, 开发者扩展的 App onCreate 逻辑
+        for (lifecycle in mAppLifecycles) {
+            lifecycle.onCreate(base)
+        }
     }
 
     override fun onTerminate(base: Application) {
@@ -36,10 +113,26 @@ class AppProxy : IApp, IAppLifecycle {
      * @return AppComponent
      * @see ArmsUtils#obtainAppComponentFromContext(Context) 可直接获取 {@link AppComponent}
      */
-    override fun getAppComponent(): AppComponent {
+    override fun getAppComponent(): AppComponent? {
+        Preconditions.checkNotNull(mAppComponent,
+                "%s == null, first call %s#onCreate(Application) in %s#onCreate()",
+                AppComponent::class.java.name, this::class.java.name,
+                mApplication?.javaClass?.name ?: Application::class.java.name)
 
+        return mAppComponent
+    }
+
+    /**
+     * 将app的全局配置信息封装进module(使用Dagger注入到需要配置信息的地方)
+     * 需要在AndroidManifest中声明{@link IConfigModule}的实现类,和Glide的配置方式相似
+     */
+    private fun getGlobalConfigModule(context: Context, moduleIS: List<IConfigModule>?): GlobalConfigModule? {
+
+        //所有配置的全局配置 GlobalConfigModule，只有最后一个起作用
+        return moduleIS?.last()?.applyOptions(context)
     }
 }
+
 
 /**
  * {@link ComponentCallbacks2} 是一个细粒度的内存回收管理回调
@@ -49,7 +142,7 @@ class AppProxy : IApp, IAppLifecycle {
  * 不响应 {@link ComponentCallbacks2#onTrimMemory(int)} 回调, 系统 kill 掉进程的几率更大
  */
 class AppComponentCallbacks(private val application: Application,
-                            private val appComponent: AppComponent) : ComponentCallbacks2 {
+                            private val appComponent: AppComponent?) : ComponentCallbacks2 {
 
 
     /**
@@ -111,5 +204,7 @@ class AppComponentCallbacks(private val application: Application,
 
 
 }
+
+
 
 

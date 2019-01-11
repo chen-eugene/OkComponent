@@ -1,4 +1,4 @@
-package com.eugene.mvpcore.base.proxy.service
+package com.eugene.commonsdk.base.service
 
 import android.app.Application
 import android.content.Context
