@@ -54,7 +54,7 @@ class ClientModule {
     @Provides
     internal fun provideClient(application: Application, configuration: OkhttpConfiguration?,
                                builder: OkHttpClient.Builder, intercept: Interceptor,
-                               interceptors: List<Interceptor>?, handler: GlobalHttpHandler?,
+                               interceptors: ArrayList<Interceptor>?, handler: GlobalHttpHandler?,
                                executorService: ExecutorService): OkHttpClient {
         builder.connectTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)

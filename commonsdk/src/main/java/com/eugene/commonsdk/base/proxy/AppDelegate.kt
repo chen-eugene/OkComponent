@@ -7,7 +7,10 @@ import android.content.res.Configuration
 import com.eugene.commonsdk.base.IApp
 import com.eugene.commonsdk.base.service.IAppLifecycle
 import com.eugene.commonsdk.di.component.AppComponent
+import com.eugene.commonsdk.di.component.DaggerAppComponent
 import com.eugene.commonsdk.di.module.GlobalConfigModule
+import com.eugene.commonsdk.di.qualifier.ALifecycle
+import com.eugene.commonsdk.di.qualifier.RxLifecycle
 import com.eugene.commonsdk.integration.IConfigModule
 import com.eugene.commonsdk.integration.cache.IntelligentCache
 import com.eugene.commonsdk.utils.ManifestParser
@@ -26,14 +29,16 @@ class AppDelegate(private val context: Context?) : IApp, IAppLifecycle {
     private var mApplication: Application? = null
     private var mAppComponent: AppComponent? = null
 
-    @field:[Named("ActivityLifecycle")]
-//    @field:ALifecycle
-    @set:Inject
+//    @field:[Named("ActivityLifecycle")]
+    @field:ALifecycle
+    @JvmField
+    @Inject
     protected var mActivityLifecycle: Application.ActivityLifecycleCallbacks? = null
 
-    @field:[Named("ActivityLifecycleForRxLifecycle")]
-//    @field:RxLifecycle
-    @set:Inject
+//    @field:[Named("ActivityLifecycleForRxLifecycle")]
+    @field:RxLifecycle
+    @JvmField
+    @Inject
     protected var mActivityLifecycleForRxLifecycle: Application.ActivityLifecycleCallbacks? = null
 
     private var mModuleIS: List<IConfigModule>? = null

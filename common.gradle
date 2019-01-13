@@ -19,6 +19,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "boolean", "IS_APP", "${isApp}"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -29,6 +35,9 @@ android {
         implementation rootProject.ext.dependencies.kotlin
 
         kapt rootProject.ext.dependencies["dagger2-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
+
+        debugImplementation rootProject.ext.dependencies["canary-debug"]
     }
 
 }

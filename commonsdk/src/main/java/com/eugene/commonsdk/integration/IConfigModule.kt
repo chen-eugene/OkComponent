@@ -16,7 +16,7 @@ interface IConfigModule {
      *
      * @param context
      */
-    fun applyOptions(context: Context?): GlobalConfigModule
+    fun applyOptions(context: Context?): GlobalConfigModule?
 
     /**
      * 使用[IAppLifecycle]在Application的生命周期中注入一些操作
@@ -24,7 +24,7 @@ interface IConfigModule {
      * @param context
      * @param lifecycles
      */
-    fun injectAppLifecycle(context: Context?, lifecycles: List<IAppLifecycle>)
+    fun injectAppLifecycle(context: Context?, lifecycles: MutableList<IAppLifecycle>)
 
     /**
      * 使用[Application.ActivityLifecycleCallbacks]在Activity的生命周期中注入一些操作
@@ -32,7 +32,7 @@ interface IConfigModule {
      * @param context
      * @param lifecycles
      */
-    fun injectActivityLifecycle(context: Context?, lifecycles: List<Application.ActivityLifecycleCallbacks>)
+    fun injectActivityLifecycle(context: Context?, lifecycles: MutableList<Application.ActivityLifecycleCallbacks>)
 
 
     /**
@@ -41,5 +41,5 @@ interface IConfigModule {
      * @param context
      * @param lifecycles
      */
-    fun injectFragmentLifecycle(context: Context?, lifecycles: List<FragmentManager.FragmentLifecycleCallbacks>)
+    fun injectFragmentLifecycle(context: Context?, lifecycles: MutableList<FragmentManager.FragmentLifecycleCallbacks>)
 }

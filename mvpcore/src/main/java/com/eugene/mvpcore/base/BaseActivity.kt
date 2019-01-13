@@ -13,14 +13,14 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 import javax.inject.Inject
 
-abstract class BaseActivity<P : IPresenter> : AppCompatActivity(), IActivity, IActivityLifecycle {
+open abstract class BaseActivity<P : IPresenter> : AppCompatActivity(), IActivity, IActivityLifecycle {
 
     protected val TAG = this.javaClass.simpleName
     private val mLifecycleSubject = BehaviorSubject.create<ActivityEvent>()
     private var mCache: Cache<String, Any>? = null
 
-    protected var mPresenter: P? = null
-        @Inject set
+    @set:Inject
+    var mPresenter: P? = null
 
     @Synchronized
     override fun provideCache(): Cache<String, Any>? {

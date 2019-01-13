@@ -1,0 +1,14 @@
+apply plugin: 'com.android.library'
+apply from: "../common.gradle"
+
+android {
+    resourcePrefix "mvpcore_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation rootProject.ext.dependencies["retrofit-url-manager"]
+    api project(":mvpcore")
+    api project(":commonservice")
+    api project(":commonres")
+}

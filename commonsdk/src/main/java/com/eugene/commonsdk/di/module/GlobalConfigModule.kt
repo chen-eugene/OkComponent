@@ -37,7 +37,7 @@ class GlobalConfigModule(private val builder: Builder) {
     private var mBaseUrl: BaseUrl? = null
     private var mLoaderStrategy: BaseImageLoaderStrategy<ImageConfig>? = null
     private var mHandler: GlobalHttpHandler? = null
-    private var mInterceptors: List<Interceptor>? = null
+    private var mInterceptors: ArrayList<Interceptor>? = null
     private var mErrorListener: ResponseErrorListener? = null
     private var mCacheFile: File? = null
     private var mRetrofitConfiguration: ClientModule.RetrofitConfiguration? = null
@@ -86,7 +86,7 @@ class GlobalConfigModule(private val builder: Builder) {
 
     @Singleton
     @Provides
-    fun provideInterceptors(): List<Interceptor>? {
+    fun provideInterceptors(): ArrayList<Interceptor>? {
         return mInterceptors
     }
 
@@ -209,7 +209,7 @@ class GlobalConfigModule(private val builder: Builder) {
         internal var mBaseUrl: BaseUrl? = null
         internal var mLoaderStrategy: BaseImageLoaderStrategy<ImageConfig>? = null
         internal var mHandler: GlobalHttpHandler? = null
-        internal var mInterceptors: MutableList<Interceptor>? = null
+        internal var mInterceptors: ArrayList<Interceptor>? = null
         internal var mErrorListener: ResponseErrorListener? = null
         internal var mCacheFile: File? = null
         internal var mRetrofitConfiguration: ClientModule.RetrofitConfiguration? = null
@@ -246,7 +246,7 @@ class GlobalConfigModule(private val builder: Builder) {
 
         fun addInterceptor(init: Builder.() -> Interceptor) = apply {
             if (mInterceptors == null)
-                mInterceptors = mutableListOf()
+                mInterceptors = arrayListOf()
 
             mInterceptors?.add(init())
         }

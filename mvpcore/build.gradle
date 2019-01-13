@@ -2,10 +2,10 @@ apply plugin: 'com.android.library'
 apply from: "../common.gradle"
 
 android {
-    resourcePrefix "gank_"
+    resourcePrefix "mvpcore_"
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':commonsdk')
+    api project(':commonsdk')
 }

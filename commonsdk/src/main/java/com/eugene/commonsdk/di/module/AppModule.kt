@@ -21,7 +21,6 @@ import javax.inject.Named
 /**
  *  提供一些框架必须的实例的 {@link Module}
  */
-
 @Module(includes = [AppModule.SubModule::class])
 object AppModule {
 
@@ -69,14 +68,14 @@ object AppModule {
         @Binds
         fun bindRepositoryManager(repositoryManager: RepositoryManager): IRepositoryManager
 
-//        @ALifecycle
         @Binds
-        @Named("ActivityLifecycle")
+//        @Named("ActivityLifecycle")
+        @ALifecycle
         fun bindActivityLifecycle(activityLifecycle: ActivityLifecycle): Application.ActivityLifecycleCallbacks
 
         @Binds
-        @Named("ActivityLifecycleForRxLifecycle")
-//        @RxLifecycle
+//        @Named("ActivityLifecycleForRxLifecycle")
+        @RxLifecycle
         fun bindActivityLifecycleForRxLifecycle(activityLifecycleForRxLifecycle: ActivityLifecycleForRxLifecycle): Application.ActivityLifecycleCallbacks
 
         @Binds

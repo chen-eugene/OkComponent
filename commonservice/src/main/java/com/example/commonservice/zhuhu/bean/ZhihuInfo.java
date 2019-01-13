@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 JessYan
+ * Copyright 2018 JessYan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,40 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.eugene.commonsdk.module.imageloader;
-
-import android.widget.ImageView;
+package com.example.commonservice.zhuhu.bean;
 
 /**
  * ================================================
- * 这里是图片加载配置信息的基类,定义一些所有图片加载框架都可以用的通用参数
- * 每个 {@link BaseImageLoaderStrategy} 应该对应一个 {@link ImageConfig} 实现类
- * <p>
- * Created by JessYan on 8/5/16 15:19
+ * Created by JessYan on 2018/4/27 14:11
  * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public class ImageConfig {
-    protected String url;
-    protected ImageView imageView;
-    protected int placeholder;//占位符
-    protected int errorPic;//错误占位符
+public class ZhihuInfo {
+    private String name;
 
-
-    public String getUrl() {
-        return url;
+    public ZhihuInfo(String name) {
+        this.name = name;
     }
 
-    public ImageView getImageView() {
-        return imageView;
+    public String getName() {
+        return name;
     }
 
-    public int getPlaceholder() {
-        return placeholder;
-    }
-
-    public int getErrorPic() {
-        return errorPic;
+    public void setName(String name) {
+        this.name = name;
     }
 }

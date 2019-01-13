@@ -18,13 +18,13 @@ import io.reactivex.disposables.Disposable
 /**
  * 基类 Presenter
  */
-class BasePresenter<M : IModel, V : IView> : IPresenter, LifecycleObserver {
+abstract class BasePresenter<M : IModel, V : IView> : IPresenter, LifecycleObserver {
 
     protected val TAG = this.javaClass.simpleName
     protected var mCompositeDisposable: CompositeDisposable? = null
 
-    protected var mModel: M? = null
-    protected var mRootView: V? = null
+    var mModel: M? = null
+    var mRootView: V? = null
 
     constructor() {
         onStart()

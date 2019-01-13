@@ -28,7 +28,7 @@ import android.content.Context
  * [Follow me](https://github.com/JessYanCoding)
  * ================================================
  */
-interface BaseImageLoaderStrategy<in T : ImageConfig> {
+interface BaseImageLoaderStrategy<T : ImageConfig> {
     /**
      * 加载图片
      *

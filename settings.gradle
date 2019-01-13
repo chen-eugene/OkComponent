@@ -1,1 +1,1 @@
-include ':app', ':mvpcore', ':commonsdk', ':imageloader-glide'
+include ':app', ':mvpcore', ':commonsdk', ':imageloader-glide', ':module_zhihu', ':commonservice', ':commonres'
