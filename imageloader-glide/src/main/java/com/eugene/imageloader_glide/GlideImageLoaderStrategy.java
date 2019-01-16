@@ -28,6 +28,10 @@ import com.bumptech.glide.util.Preconditions;
 import com.eugene.commonsdk.di.module.GlobalConfigModule;
 import com.eugene.commonsdk.module.imageloader.BaseImageLoaderStrategy;
 import com.eugene.commonsdk.module.imageloader.ImageConfig;
+import com.eugene.imageloader_glide.config.GlideArms;
+import com.eugene.imageloader_glide.config.GlideImageConfigImpl;
+import com.eugene.imageloader_glide.config.GlideRequest;
+import com.eugene.imageloader_glide.config.GlideRequests;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -48,12 +52,12 @@ import timber.log.Timber;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageConfigImpl>, GlideAppliesOptions {
+public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<GlideImageConfigImpl>, GlideAppliesOptions {
 
     @Override
-    public void loadImage(@NotNull Context ctx, @NotNull ImageConfigImpl config) {
+    public void loadImage(@NotNull Context ctx, @NotNull GlideImageConfigImpl config) {
         Preconditions.checkNotNull(ctx, "Context is required");
-        Preconditions.checkNotNull(config, "ImageConfigImpl is required");
+        Preconditions.checkNotNull(config, "GlideImageConfigImpl is required");
         Preconditions.checkNotNull(config.getImageView(), "ImageView is required");
 
         GlideRequests requests;
@@ -122,9 +126,9 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
     }
 
     @Override
-    public  void clear(@NotNull final Context ctx, @NotNull ImageConfigImpl config) {
+    public  void clear(@NotNull final Context ctx, @NotNull GlideImageConfigImpl config) {
         Preconditions.checkNotNull(ctx, "Context is required");
-        Preconditions.checkNotNull(config, "ImageConfigImpl is required");
+        Preconditions.checkNotNull(config, "GlideImageConfigImpl is required");
 
         if (config.getImageView() != null) {
             GlideArms.get(ctx).getRequestManagerRetriever().get(ctx).clear(config.getImageView());

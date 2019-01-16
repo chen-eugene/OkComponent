@@ -10,7 +10,7 @@ import com.eugene.commonsdk.integration.IRepositoryManager
  * 基类 Model
  * @param mRepositoryManager 用于管理网络请求层, 以及数据缓存层
  */
-class BaseModel(private var mRepositoryManager: IRepositoryManager?)
+abstract class BaseModel(protected var mRepositoryManager: IRepositoryManager?)
     : IModel, LifecycleObserver {
 
     /**

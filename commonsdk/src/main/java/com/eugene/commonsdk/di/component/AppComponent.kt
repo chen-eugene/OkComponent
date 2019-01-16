@@ -2,7 +2,7 @@ package com.eugene.commonsdk.di.component
 
 import android.app.Activity
 import android.app.Application
-import com.eugene.commonsdk.base.proxy.AppDelegate
+import com.eugene.commonsdk.base.delegate.AppDelegate
 import com.eugene.commonsdk.di.module.AppModule
 import com.eugene.commonsdk.di.module.ClientModule
 import com.eugene.commonsdk.di.module.GlobalConfigModule

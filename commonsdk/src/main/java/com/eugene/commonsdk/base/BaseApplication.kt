@@ -2,7 +2,7 @@ package com.eugene.commonsdk.base
 
 import android.app.Application
 import android.content.Context
-import com.eugene.commonsdk.base.proxy.AppDelegate
+import com.eugene.commonsdk.base.delegate.AppDelegate
 import com.eugene.commonsdk.base.service.IAppLifecycle
 import com.eugene.commonsdk.di.component.AppComponent
 import com.eugene.commonsdk.utils.Preconditions

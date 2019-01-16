@@ -2,13 +2,24 @@ apply plugin: 'com.android.library'
 apply from: "../common.gradle"
 
 android {
-    resourcePrefix "mvpcore_"
+    resourcePrefix "zhihu_"
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            if (isApp) {
+                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.dependencies["retrofit-url-manager"]
-    api project(":mvpcore")
-    api project(":commonservice")
-    api project(":commonres")
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api project(":mvpcore")//mvp实现，已经依赖了commonsdk
+    api project(":commonservice")//组件通讯接口
+    api project(":commonres")//公共资源组件
 }

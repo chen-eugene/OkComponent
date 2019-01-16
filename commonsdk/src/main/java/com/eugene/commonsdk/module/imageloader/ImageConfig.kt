@@ -24,14 +24,15 @@ import android.widget.ImageView
  * ================================================
  */
 open class ImageConfig {
-    protected open var url: String? = null
-    protected open var imageView: ImageView? = null
+    open var url: String? = null
+    open var imageView: ImageView? = null
     /**
      * 占位符
      */
-    protected open var placeholder: Int = 0
+    open var placeholder: Int = 0
     /**
      * 错误占位符
      */
-    protected open var errorPic: Int = 0
+    open var errorPic: Int = 0
 }
+

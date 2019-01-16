@@ -14,9 +14,8 @@ import com.google.gson.GsonBuilder
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import retrofit2.http.Field
 import java.util.*
-import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  *  提供一些框架必须的实例的 {@link Module}
@@ -24,9 +23,10 @@ import javax.inject.Named
 @Module(includes = [AppModule.SubModule::class])
 object AppModule {
 
+    @Singleton
     @Provides
     @JvmStatic
-    internal fun provideGson(application: Application, configuration: GsonConfiguration?): Gson {
+    fun provideGson(application: Application, configuration: GsonConfiguration?): Gson {
         val builder = GsonBuilder()
         configuration?.configGson(application, builder)
         return builder.create()
@@ -40,12 +40,14 @@ object AppModule {
      * @param application
      * @return
      */
+    @Singleton
     @Provides
     @JvmStatic
     internal fun provideAppManager(application: Application): AppManager {
         return AppManager.getAppManager().init(application)
     }
 
+    @Singleton
     @Provides
     @JvmStatic
     internal fun provideExtras(cacheFactory: Cache.Factory?): Cache<String, Any>? {
@@ -56,6 +58,7 @@ object AppModule {
         else null
     }
 
+    @Singleton
     @Provides
     @JvmStatic
     internal fun provideFragmentLifecycles(): List<FragmentManager.FragmentLifecycleCallbacks> {

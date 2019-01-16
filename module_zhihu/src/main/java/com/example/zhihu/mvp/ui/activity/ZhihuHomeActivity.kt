@@ -22,10 +22,13 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.eugene.commonsdk.base.DefAdapter
 import com.eugene.commonsdk.di.component.AppComponent
 import com.eugene.commonsdk.utils.ArmsUtils
 import com.eugene.mvpcore.base.BaseActivity
 import com.example.commonservice.core.RouterHub
+import com.example.zhihu.R
+import com.example.zhihu.di.component.DaggerZhihuHomeComponent
 import com.example.zhihu.mvp.contract.ZhihuHomeContract
 import com.example.zhihu.mvp.presenter.ZhihuHomePresenter
 
@@ -115,7 +118,7 @@ class ZhihuHomeActivity : BaseActivity<ZhihuHomePresenter>(), ZhihuHomeContract.
     }
 
     override fun onDestroy() {
-        DefaultAdapter.releaseAllHolder(mRecyclerView)//super.onDestroy()之后会unbind,所有view被置为null,所以必须在之前调用
+        DefAdapter.releaseAllHolder(mRecyclerView)//super.onDestroy()之后会unbind,所有view被置为null,所以必须在之前调用
         super.onDestroy()
     }
 }

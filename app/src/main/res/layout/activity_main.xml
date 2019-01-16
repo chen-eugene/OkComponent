@@ -1,19 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/public_white"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/sample_text"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="@dimen/public_height_280dp"
+        android:background="@color/public_colorPrimaryDark"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="animation-lottie-splash.json"
+        app:lottie_loop="true" />
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_zhihu"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/public_background"
+            android:textColor="@color/public_color_959292"
+            android:textSize="@dimen/public_font_24sp"
+            tools:text="@string/public_name_zhihu" />
+
+        <Button
+            android:id="@+id/bt_gank"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/public_background"
+            android:textColor="@color/public_color_959292"
+            android:textSize="@dimen/public_font_24sp"
+            tools:text="@string/public_name_gank" />
+
+        <Button
+            android:id="@+id/bt_gold"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/public_background"
+            android:textColor="@color/public_color_959292"
+            android:textSize="@dimen/public_font_24sp"
+            tools:text="@string/public_name_gold" />
+    </LinearLayout>
+</LinearLayout>

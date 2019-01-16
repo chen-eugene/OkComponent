@@ -2,5 +2,5 @@ apply plugin: 'com.android.library'
 apply from:'../common.gradle'
 
 dependencies {
-    compileOnly rootProject.ext.dependencies["arouter"]
+    api rootProject.ext.dependencies["arouter"]
 }

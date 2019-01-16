@@ -144,6 +144,6 @@ class ClientModule {
          * 若想自定义 RxCache 的缓存文件夹或者解析方式, 如改成 fastjson
          * 请 `return rxCacheBuilder.persistence(cacheDirectory, new FastJsonSpeaker());`, 否则请 `return null;`
          */
-        fun configRxCache(context: Context, builder: RxCache.Builder): RxCache
+        fun configRxCache(context: Context, builder: RxCache.Builder): RxCache?
     }
 }
