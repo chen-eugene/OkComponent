@@ -19,7 +19,6 @@ import android.app.Application
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import com.alibaba.android.arouter.launcher.ARouter
 import com.eugene.commonsdk.base.delegate.AppDelegate
 import com.eugene.commonsdk.base.service.IAppLifecycle
 import com.eugene.commonsdk.core.ActivityLifecycleCallbacksImpl
